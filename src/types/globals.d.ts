@@ -12,5 +12,4 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-declare const __SIMPLE_MODE__: boolean;
 declare const __DISABLED_TOOLS__: string[];

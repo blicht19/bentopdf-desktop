@@ -53,87 +53,6 @@ const init = async () => {
     'pdfjs-dist/build/pdf.worker.min.mjs',
     import.meta.url
   ).toString();
-  if (__SIMPLE_MODE__) {
-    const hideBrandingSections = () => {
-      const heroSection = document.getElementById('hero-section');
-      if (heroSection) {
-        heroSection.style.display = 'none';
-      }
-
-      const githubLink = document.querySelector(
-        'a[href*="github.com/alam00000/bentopdf"]'
-      );
-      if (githubLink) {
-        (githubLink as HTMLElement).style.display = 'none';
-      }
-
-      const featuresSection = document.getElementById('features-section');
-      if (featuresSection) {
-        featuresSection.style.display = 'none';
-      }
-
-      const securitySection = document.getElementById(
-        'security-compliance-section'
-      );
-      if (securitySection) {
-        securitySection.style.display = 'none';
-      }
-
-      const faqSection = document.getElementById('faq-accordion');
-      if (faqSection) {
-        faqSection.style.display = 'none';
-      }
-
-      const testimonialsSection = document.getElementById(
-        'testimonials-section'
-      );
-      if (testimonialsSection) {
-        testimonialsSection.style.display = 'none';
-      }
-
-      const supportSection = document.getElementById('support-section');
-      if (supportSection) {
-        supportSection.style.display = 'none';
-      }
-
-      // Hide "Used by companies" section
-      const usedBySection = document.querySelector(
-        '.hide-section'
-      ) as HTMLElement;
-      if (usedBySection) {
-        usedBySection.style.display = 'none';
-      }
-
-      const sectionDividers = document.querySelectorAll('.section-divider');
-      sectionDividers.forEach((divider) => {
-        (divider as HTMLElement).style.display = 'none';
-      });
-
-      const brandName = __BRAND_NAME__ || 'BentoPDF';
-      document.title = `${brandName} - ${t('simpleMode.title')}`;
-
-      const toolsHeader = document.getElementById('tools-header');
-      if (toolsHeader) {
-        const title = toolsHeader.querySelector('h2');
-        const subtitle = toolsHeader.querySelector('p');
-        if (title) {
-          title.textContent = t('simpleMode.title');
-          title.className = 'text-4xl md:text-5xl font-bold text-white mb-3';
-        }
-        if (subtitle) {
-          subtitle.textContent = t('simpleMode.subtitle');
-          subtitle.className = 'text-lg text-gray-400';
-        }
-      }
-
-      const app = document.getElementById('app');
-      if (app) {
-        app.style.paddingTop = '1rem';
-      }
-    };
-
-    hideBrandingSections();
-  }
 
   // Hide shortcuts buttons on mobile devices (Android/iOS)
   // exclude iPad -> users can connect keyboard and use shortcuts
@@ -539,29 +458,6 @@ const init = async () => {
 
   createIcons({ icons });
   console.log('Please share our tool and share the love!');
-
-  const githubStarsElements = [
-    document.getElementById('github-stars-desktop'),
-    document.getElementById('github-stars-mobile'),
-  ];
-
-  if (githubStarsElements.some((el) => el) && !__SIMPLE_MODE__) {
-    fetch('https://api.github.com/repos/alam00000/bentopdf')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.stargazers_count !== undefined) {
-          const formattedStars = formatStars(data.stargazers_count);
-          githubStarsElements.forEach((el) => {
-            if (el) el.textContent = formattedStars;
-          });
-        }
-      })
-      .catch(() => {
-        githubStarsElements.forEach((el) => {
-          if (el) el.textContent = '-';
-        });
-      });
-  }
 
   // Initialize Shortcuts System
   ShortcutsManager.init();
