@@ -25,11 +25,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
-    "types": ["vite/client", "vitest/globals"], // Added vitest/globals
-    /* Easier module handling for Vite */
-    "moduleResolution": "bundler",
+    "module": "commonjs",
     "allowJs": true,
     "checkJs": false,
     "skipLibCheck": true,
