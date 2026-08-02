@@ -36,6 +36,7 @@ async function preloadPyMuPDF(): Promise<void> {
   preloadState.pymupdf = PreloadStatus.LOADING;
   console.log('[Preloader] Starting PyMuPDF preload...');
 
+  let blobUrl;
   try {
     const pymupdfBaseUrl = getWasmBaseUrl('pymupdf')!;
     const gsBaseUrl = getWasmBaseUrl('ghostscript');
@@ -44,7 +45,14 @@ async function preloadPyMuPDF(): Promise<void> {
       : `${pymupdfBaseUrl}/`;
 
     const wrapperUrl = `${normalizedUrl}dist/index.js`;
-    const module = await import(/* @vite-ignore */ wrapperUrl);
+    const response = await fetch(wrapperUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch pymupdf: HTTP ${response.status}`);
+    }
+    const jsText = await response.text();
+    const blob = new Blob([jsText], { type: 'application/javascript' });
+    blobUrl = URL.createObjectURL(blob);
+    const module = await import(/* @vite-ignore */ blobUrl);
 
     const pymupdfInstance = new module.PyMuPDF({
       assetPath: `${normalizedUrl}assets/`,
@@ -56,6 +64,10 @@ async function preloadPyMuPDF(): Promise<void> {
   } catch (e) {
     preloadState.pymupdf = PreloadStatus.ERROR;
     console.warn('[Preloader] PyMuPDF preload failed:', e);
+  } finally {
+    if (blobUrl) {
+      URL.revokeObjectURL(blobUrl);
+    }
   }
 }
 

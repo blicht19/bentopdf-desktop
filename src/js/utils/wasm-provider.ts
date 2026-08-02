@@ -9,9 +9,9 @@ interface WasmProviderConfig {
 const STORAGE_KEY = 'bentopdf:wasm-providers';
 
 const CDN_DEFAULTS: Record<WasmPackage, string> = {
-  pymupdf: 'https://cdn.jsdelivr.net/npm/@bentopdf/pymupdf-wasm@0.11.16/',
-  ghostscript: 'https://cdn.jsdelivr.net/npm/@bentopdf/gs-wasm@0.1.1/assets/',
-  cpdf: 'https://cdn.jsdelivr.net/npm/coherentpdf@2.5.5/dist/',
+  pymupdf: import.meta.env.BASE_URL + 'pymupdf-wasm@0.11.16/',
+  ghostscript: import.meta.env.BASE_URL + 'gs-wasm@0.1.1/assets/',
+  cpdf: import.meta.env.BASE_URL,
 };
 
 function envOrDefault(envVar: string | undefined, fallback: string): string {

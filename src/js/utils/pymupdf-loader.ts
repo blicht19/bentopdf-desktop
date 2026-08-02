@@ -55,10 +55,17 @@ export async function loadPyMuPDF(): Promise<PyMuPDFInstance> {
       ? pymupdfUrl
       : `${pymupdfUrl}/`;
 
-    try {
-      const wrapperUrl = `${normalizedPymupdf}dist/index.js`;
-      const module = await import(/* @vite-ignore */ wrapperUrl);
+    const wrapperUrl = `${normalizedPymupdf}dist/index.js`;
+    const response = await fetch(wrapperUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch pymupdf: HTTP ${response.status}`);
+    }
 
+    const jsText = await response.text();
+    const blob = new Blob([jsText], { type: 'application/javascript' });
+    const blobUrl = URL.createObjectURL(blob);
+    try {
+      const module = await import(/* @vite-ignore */ blobUrl);
       if (typeof module.PyMuPDF !== 'function') {
         throw new Error(
           'PyMuPDF module did not export expected PyMuPDF class.'
@@ -80,6 +87,8 @@ export async function loadPyMuPDF(): Promise<PyMuPDFInstance> {
       throw new Error(`Failed to load PyMuPDF from CDN: ${msg}`, {
         cause: error,
       });
+    } finally {
+      URL.revokeObjectURL(blobUrl);
     }
   })();
 

@@ -23,6 +23,8 @@ export default [
       'public/coherentpdf.browser.min.js',
       'public/libreoffice-wasm/**',
       'public/workers/**',
+      'public/gs-wasm@0.1.1/**',
+      'public/pymupdf-wasm@0.11.16/**',
     ],
   },
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
