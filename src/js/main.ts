@@ -4,7 +4,6 @@ import { ShortcutsManager } from './logic/shortcuts.js';
 import { createIcons, icons } from 'lucide';
 import '@phosphor-icons/web/regular';
 import * as pdfjsLib from 'pdfjs-dist';
-import '../css/styles.css';
 import {
   escapeHtml,
   formatShortcutDisplay,
